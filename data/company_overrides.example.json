@@ -1,0 +1,15 @@
+{
+  "source": "manual_company_metadata_overrides",
+  "notes": "Copy this file to company_overrides.json and fill reviewed listed-company metadata. The example file is ignored by the monitor.",
+  "companies": [
+    {
+      "t": "EXAMPLE",
+      "name": "Example Company 示例公司",
+      "country": "美国",
+      "city": "San Jose",
+      "lat": 37.3382,
+      "lon": -121.8863,
+      "seg": "GPU/AI芯片"
+    }
+  ]
+}

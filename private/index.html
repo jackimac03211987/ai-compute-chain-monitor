@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI 算力链私有工作空间</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="private.css">
+</head>
+<body>
+  <section id="private-auth" class="auth">
+    <form id="private-auth-form" class="auth-box">
+      <div class="mark">AI</div>
+      <p class="eyebrow">PRIVATE WORKSPACE</p>
+      <h1>私有工作空间</h1>
+      <p>使用管理员分配的个人 Token 解锁你的自选股与接口。</p>
+      <label>个人 Token
+        <input id="private-token" type="password" required autocomplete="current-password">
+      </label>
+      <p id="private-auth-error" class="error" role="alert"></p>
+      <button class="primary" type="submit">验证并进入</button>
+    </form>
+  </section>
+
+  <div id="private-shell" hidden>
+    <header>
+      <div><strong>AI 算力链</strong><span>PRIVATE WORKSPACE</span></div>
+      <div><span id="profile-name"></span><button id="private-lock" class="quiet">锁定</button></div>
+    </header>
+    <div id="effective-user-banner" class="support-banner" hidden></div>
+    <div class="layout">
+      <nav aria-label="个人工作区导航">
+        <button class="active" data-panel="personal-watchlist">自选股</button>
+        <button data-panel="personal-interfaces">接口监测</button>
+        <button data-panel="personal-transfer">导入导出</button>
+        <button data-panel="personal-audit">操作审计</button>
+        <button data-panel="personal-support">支持授权</button>
+      </nav>
+      <main>
+        <p id="workspace-notice" class="notice" role="status" aria-live="polite" hidden></p>
+        <section id="personal-watchlist" class="panel active">
+          <div class="heading">
+            <div><p class="eyebrow">WATCHLIST</p><h2>我的自选股</h2></div>
+            <form id="add-ticker-form">
+              <input id="new-ticker" placeholder="股票代码" aria-label="股票代码" required>
+              <input id="new-ticker-name" placeholder="名称" aria-label="股票名称">
+              <button class="primary">添加</button>
+            </form>
+          </div>
+          <div class="table-wrap">
+            <table><thead><tr><th>代码</th><th>名称</th><th>价格</th><th>涨跌幅</th><th>操作</th></tr></thead><tbody id="personal-watchlist-rows"></tbody></table>
+          </div>
+        </section>
+
+        <section id="personal-interfaces" class="panel">
+          <div class="heading">
+            <div><p class="eyebrow">INTERFACES</p><h2>我的监测接口</h2></div>
+            <button id="add-interface" class="primary" type="button">新增接口</button>
+          </div>
+          <div class="table-wrap">
+            <table><thead><tr><th>接口</th><th>类型</th><th>目标</th><th>周期</th><th>来源</th><th>操作</th></tr></thead><tbody id="personal-interface-rows"></tbody></table>
+          </div>
+        </section>
+
+        <section id="personal-transfer" class="panel">
+          <div class="heading">
+            <div><p class="eyebrow">DATA TRANSFER</p><h2>接口台账导入导出</h2></div>
+            <div class="toolbar">
+              <button id="download-interface-template" class="quiet" type="button">下载模板</button>
+              <button id="export-interfaces" class="primary" type="button">导出 JSON</button>
+            </div>
+          </div>
+          <div class="module-band">
+            <div><h3>批量导入</h3><p>支持 XLSX、CSV、JSON。导入内容先生成预览，不会直接写入个人台账。</p></div>
+            <div class="upload-actions">
+              <input id="interface-import-file" type="file" accept=".xlsx,.csv,.json">
+              <button id="preview-interface-import" class="quiet" type="button">生成预览</button>
+              <button id="apply-interface-import" class="primary" type="button" disabled>确认应用</button>
+            </div>
+          </div>
+          <pre id="interface-import-summary" class="result-box">尚未选择文件。</pre>
+        </section>
+
+        <section id="personal-audit" class="panel">
+          <div class="heading">
+            <div><p class="eyebrow">AUDIT</p><h2>我的操作审计</h2></div>
+            <button id="refresh-audit" class="quiet" type="button">刷新记录</button>
+          </div>
+          <div class="table-wrap">
+            <table><thead><tr><th>时间</th><th>操作</th><th>结果</th><th>关联对象</th></tr></thead><tbody id="audit-rows"></tbody></table>
+          </div>
+        </section>
+
+        <section id="personal-support" class="panel">
+          <div class="heading"><div><p class="eyebrow">SUPPORT ACCESS</p><h2>临时排障授权</h2></div></div>
+          <form id="support-grant-form" class="module-band support-form">
+            <div>
+              <h3>授权系统管理员临时查看</h3>
+              <p>授权最长 24 小时，仅限勾选模块，可随时撤销。管理员默认无法查看你的私有数据。</p>
+            </div>
+            <label>授权时长
+              <select id="support-duration"><option value="1">1 小时</option><option value="4">4 小时</option><option value="12">12 小时</option><option value="24">24 小时</option></select>
+            </label>
+            <fieldset><legend>授权范围</legend><div class="check-grid">
+              <label><input type="checkbox" name="support-scope" value="watchlist">自选股</label>
+              <label><input type="checkbox" name="support-scope" value="interfaces" checked>接口</label>
+              <label><input type="checkbox" name="support-scope" value="transfer">导入导出</label>
+              <label><input type="checkbox" name="support-scope" value="audit">审计</label>
+            </div></fieldset>
+            <label class="wide">排障原因<input id="support-reason" required maxlength="200" placeholder="说明需要管理员协助的问题"></label>
+            <div class="wide form-submit"><button class="primary" type="submit">创建临时授权</button></div>
+          </form>
+          <pre id="support-grant-result" class="result-box">当前没有本次会话创建的授权。</pre>
+          <div class="dialog-actions"><button id="revoke-support-grant" class="danger" type="button" disabled>撤销本次授权</button></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="interface-dialog" aria-labelledby="interface-dialog-title">
+    <form id="interface-form" method="dialog">
+      <div class="dialog-head">
+        <div><p class="eyebrow">NEW INTERFACE</p><h2 id="interface-dialog-title">新增监测接口</h2></div>
+        <button id="close-interface-dialog" class="icon-button" type="button" aria-label="关闭">×</button>
+      </div>
+      <div class="form-grid">
+        <label>接口名称<input id="interface-name" required maxlength="80"></label>
+        <label>提供方<input id="interface-provider" required maxlength="80"></label>
+        <label>监测类型
+          <select id="interface-mode">
+            <option value="http">HTTP 接口</option>
+            <option value="local_task">本地任务</option>
+            <option value="local_file">本地文件</option>
+            <option value="composite">组合检测</option>
+          </select>
+        </label>
+        <label>检测周期（分钟）<input id="interface-interval" type="number" min="1" max="1440" value="15" required></label>
+        <label class="wide">接口 URL<input id="interface-url" type="url" placeholder="api.example.com/health" required></label>
+        <label>超时（秒）<input id="interface-timeout" type="number" min="1" max="30" value="8" required></label>
+        <label>鉴权方式
+          <select id="interface-auth-type">
+            <option value="none">无需鉴权</option><option value="bearer">Bearer Token</option><option value="api_key">API Key</option><option value="basic">Basic Auth</option>
+          </select>
+        </label>
+        <label id="interface-auth-identity-wrap" hidden>用户名 / 请求头名<input id="interface-auth-identity" autocomplete="off"></label>
+        <label id="interface-secret-wrap" class="wide" hidden>凭证密钥<input id="interface-secret" type="password" autocomplete="new-password"></label>
+      </div>
+      <p id="interface-form-error" class="error" role="alert"></p>
+      <div class="dialog-actions">
+        <button id="cancel-interface" class="quiet" type="button">取消</button>
+        <button id="save-interface" class="primary" type="submit">创建接口</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="private.js"></script>
+</body>
+</html>

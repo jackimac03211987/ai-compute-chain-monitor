@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Runtime state
+logs/
+backups/
+.worktrees/
+*.tmp
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+
+# Runtime and locally curated data. Only public seed files are committed.
+data/*
+!data/city_coords.json
+!data/exchange_coords.json
+!data/company_overrides.example.json
+
+# Private research inputs and machine-specific deployment material
+matrices/
+*.xlsx
+AI算力链行情终端_自选监测与视觉升级开发文档_*.md
+docs/superpowers/
+docs/open-beta-operations.md
+docs/private-workspaces-operations.md
+deploy/
+ops/*.plist
+fetch_live 2.py
+
+# Dependency lock files are source artifacts and remain tracked.
+!requirements-runtime.lock
