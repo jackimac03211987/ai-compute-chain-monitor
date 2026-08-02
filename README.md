@@ -7,6 +7,19 @@ An interactive 3D market-monitoring terminal for the global AI compute supply ch
 
 The project is designed for research, visualization, and small private deployments. It does not require a JavaScript build system: the frontend is served directly by the Python service and all browser dependencies are vendored locally.
 
+## Demo
+
+![AI Compute Chain Pulse dashboard showing the interactive 3D globe, market segments, exchange clocks, top movers, and compute-chain index](docs/assets/dashboard-demo.png)
+
+The main screen is a live operations view of the global AI compute supply chain:
+
+- **Center:** an interactive WebGL globe places monitored companies in their operating regions and visualizes market direction.
+- **Left:** industry-segment and focus-market panels summarize market-cap-weighted movement across the compute stack.
+- **Right:** top gainers, top decliners, and the most active companies provide an immediate market pulse.
+- **Bottom:** exchange sessions, collection status, the compute-chain index, turnover, and market breadth remain visible while the globe is explored.
+
+The screenshot is an illustrative market snapshot; quotes may be delayed and availability depends on the configured upstream data source. To run the interactive demo locally, follow [Quick Start](#quick-start), then open `http://127.0.0.1:8911/` in a WebGL-capable browser.
+
 ## Highlights
 
 - 3D globe with company locations, regional market state, exchange hours, and language-aware gain/loss colors.
